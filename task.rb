@@ -27,9 +27,8 @@ class Task
   end
 end
 
-class TaskList < Task
-  def initialize t, d
-    super
+class TaskList
+  def initialize
    @tasks = []
   end
 
@@ -48,6 +47,32 @@ class TaskList < Task
   def incomplete_tasks
     tasks.select {|task| task.status}
   end
+end
+
+class DueDateTask < Task #Date.today.month
+
+   def initialize t, d, day, year, month
+     super(t,d)
+     @day = day
+     @year = year
+     @month = month
+   end
+
+   def day
+     @day
+   end
+
+   def year
+     @year
+   end
+
+   def month
+     @month
+   end
+
+   def print_date
+     "#{@month}/#{@day}/#{@year}"
+   end
 
 end
 

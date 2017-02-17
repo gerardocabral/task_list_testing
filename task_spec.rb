@@ -38,7 +38,7 @@ end
 # Hint: A TaskList has-many Tasks
 describe TaskList do
   it "must create a task list object" do
-    expect{TaskList.new("Title: Buy Food", "Description: milk, eggs")}.to_not raise_error
+    expect{TaskList.new}.to_not raise_error
   end
   # Story: As a developer with a TaskList, I can get the completed items.
   it "must return the completed items from TaskList" do
@@ -49,7 +49,7 @@ describe TaskList do
     task_1.done
     task_2 = Task.new("Title: Car Main.", "Description: change oil, wash, get gas")
     task_2.status
-    task_list = TaskList.new("Title: Buy Food", "Description: milk, eggs")
+    task_list = TaskList.new
     # create a method that goes through all tasks and pulls out complete items
     task_list.store(task)
     task_list.store(task_1)
@@ -60,14 +60,15 @@ describe TaskList do
   end
   it "must return the completed items from TaskList" do
     #create multiple tasks with status as done or unfinished
+    # Story: As a developer with a TaskList, I can get the incomplete items.
     task = Task.new("Title: Buy Food", "Description: milk, eggs")
     task.done
     task_1 = Task.new("Title: Laundry", "Description: Wash, dry, fold")
     task_1.done
     task_2 = Task.new("Title: Car Main.", "Description: change oil, wash, get gas")
     task_2.status
-    task_list = TaskList.new("Title: Buy Food", "Description: milk, eggs")
-    # create a method that goes through all tasks and pulls out complete items
+    task_list = TaskList.new
+    # create a method that goes through all tasks and pulls out incomplete items
     task_list.store(task)
     task_list.store(task_1)
     task_list.store(task_2)
@@ -77,6 +78,34 @@ describe TaskList do
   end
 end
 
+# Story: As a developer, I can create a DueDateTask, which is-a Task that has-a due date.
+# Hint: Use the built-in Ruby Date class
+describe DueDateTask do
+  it "has to create a Due Date object" do
+    expect{DueDateTask.new("Title: Buy Food", "Description: milk, eggs", "17", "2017", "2")}.to_not raise_error
+  end
+  # Story: As a developer, I can print an item with a due date with labels and values.
+  # Hint: When implementing to_s, use super to call to_s on the super class.
+  it "must print an item with a due date w/ labels & values" do
+    due_date = DueDateTask.new("Title: Buy Food", "Description: milk, eggs", "17", "2017", "2")
+    expect(due_date.print_date).to eq("2/17/2017")
+  end
+  # Story: As a developer, I can add items with due dates to my TaskList.
+  # Hint: Consider keeping items with due dates separate from the other items.
+  it "has to add items with due dates to my TaskList" do
+    task = Task.new("Title: Buy Food", "Description: milk, eggs")
+    task.done
+    task_list = TaskList.new
+    task_list.store(task)
+    task_due_date = DueDateTask.new("Title: Buy Food", "Description: milk, eggs", "17", "2017", "2")
+    task_list.store(task_due_date)
+    expect(task_list.tasks).to include(task, task_due_date)
+  end
+  # Story: As a developer with a TaskList, I can list all the not completed items that are due today.
+  it "has to provide a list of not completed items due today" do
+    #create tasks and tasks with due dates, have tasks not complete due today
+  end
+end
 
 
 
@@ -84,6 +113,7 @@ end
 
 
 
+# Story: As a developer with a TaskList, I can list all the not completed items in order of due date.
 
 
-# Story: As a developer with a TaskList, I can get the incomplete items.
+# Story: As a developer with a TaskList with and without due dates, I can list all the not completed items in order of due date, and then the items without due dates.
