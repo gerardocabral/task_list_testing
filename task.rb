@@ -2,7 +2,8 @@ class Task
   def initialize t, d
     @title = t
     @description = d
-    @status = "unfinished"
+    @status = ""
+
   end
 
   def title
@@ -19,6 +20,10 @@ class Task
 
   def done
     @status = "complete"
+  end
+
+  def not_done
+    @status = "incomplete"
   end
 
   def to_s
@@ -40,13 +45,30 @@ class TaskList
     @tasks
   end
 
-  def completed_tasks
-    tasks.select { |task| task.done }
+  def completed
+    tasks.select { |task| task.status == "complete" }
   end
 
-  def incomplete_tasks
-    tasks.select {|task| task.status}
+  def incomplete
+    tasks.select {|task| task.status == "incomplete" }
   end
+
+  def incomplete_due_today
+    incomplete.select { |task|  task.day == Date.today.day.to_s }
+  end
+
+  def incomplete_ordered_by_day
+    incomplete.sort_by { |a| [a.day] }
+  end
+
+  # def incomplete_tasks_ordered_by_day
+  #   incomplete_tasks.sort_by {|a|
+  #     if a.class == DueDateTask
+  #       return [a.day]
+  #     }
+  #     end
+  # end
+
 end
 
 class DueDateTask < Task #Date.today.month

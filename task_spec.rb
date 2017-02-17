@@ -48,17 +48,17 @@ describe TaskList do
     task_1 = Task.new("Title: Laundry", "Description: Wash, dry, fold")
     task_1.done
     task_2 = Task.new("Title: Car Main.", "Description: change oil, wash, get gas")
-    task_2.status
+    task_2.done
     task_list = TaskList.new
     # create a method that goes through all tasks and pulls out complete items
     task_list.store(task)
     task_list.store(task_1)
     task_list.store(task_2)
     task_list.tasks
-    task_list.completed_tasks
-    expect(task_list.completed_tasks).to include(task, task_1)
+    task_list.completed
+    expect(task_list.completed).to include(task, task_1)
   end
-  it "must return the completed items from TaskList" do
+  it "must return the incompleted items from TaskList" do
     #create multiple tasks with status as done or unfinished
     # Story: As a developer with a TaskList, I can get the incomplete items.
     task = Task.new("Title: Buy Food", "Description: milk, eggs")
@@ -66,15 +66,15 @@ describe TaskList do
     task_1 = Task.new("Title: Laundry", "Description: Wash, dry, fold")
     task_1.done
     task_2 = Task.new("Title: Car Main.", "Description: change oil, wash, get gas")
-    task_2.status
+    task_2.not_done
     task_list = TaskList.new
     # create a method that goes through all tasks and pulls out incomplete items
     task_list.store(task)
     task_list.store(task_1)
     task_list.store(task_2)
     task_list.tasks
-    task_list.incomplete_tasks
-    expect(task_list.incomplete_tasks).to include(task_2)
+    task_list.incomplete
+    expect(task_list.incomplete).to include(task_2)
   end
 end
 
@@ -104,16 +104,50 @@ describe DueDateTask do
   # Story: As a developer with a TaskList, I can list all the not completed items that are due today.
   it "has to provide a list of not completed items due today" do
     #create tasks and tasks with due dates, have tasks not complete due today
+    task = Task.new("Title: Buy Food", "Description: milk, eggs")
+    task.done
+    task_list = TaskList.new
+    task_list.store(task)
+    task_due_date = DueDateTask.new("Title: Buy Food", "Description: milk, eggs", "17", "2017", "2")
+    task_due_date.not_done
+    task_list.store(task_due_date)
+    task_due_date_2 = DueDateTask.new("Title: Laundry", "Description: milk, eggs", "18", "2017", "2")
+    task_due_date_2.not_done
+    task_list.store(task_due_date_2)
+    expect(task_list.incomplete_due_today).to include(task_due_date)
   end
+  # Story: As a developer with a TaskList, I can list all the not completed items in order of due date.
+  it "must list all incomplete tasks in order by due date" do
+    task = Task.new("Title: Buy Food", "Description: milk, eggs")
+    task.done
+    task_list = TaskList.new
+    task_list.store(task)
+    task_due_date = DueDateTask.new("Title: Buy Food", "Description: milk, eggs", "17", "2017", "2")
+    task_due_date.not_done
+    task_list.store(task_due_date)
+    task_due_date_2 = DueDateTask.new("Title: Laundry", "Description: milk, eggs", "18", "2017", "2")
+    task_due_date_2.not_done
+    task_list.store(task_due_date_2)
+    task_list.incomplete
+    expect(task_list.incomplete_ordered_by_day).to include(task_due_date, task_due_date_2)
+  end
+  # Story: As a developer with a TaskList with and without due dates, I can list all the not completed items in order of due date, and then the items without due dates.
+  # it "must list tasks from ones with due date to no due date" do
+  #   task = Task.new("Title: Buy Food", "Description: milk, eggs")
+  #   task.done
+  #   task_0 = Task.new("Title: Buy Food", "Description: milk, eggs")
+  #   task.incomplete
+  #   task_list = TaskList.new
+  #   task_list.store(task)
+  #   task_list.store(tasl_0)
+  #   task_due_date = DueDateTask.new("Title: Buy Food", "Description: milk, eggs", "17", "2017", "2")
+  #   task_due_date.incomplete
+  #   task_list.store(task_due_date)
+  #   task_due_date_2 = DueDateTask.new("Title: Laundry", "Description: milk, eggs", "18", "2017", "2")
+  #   task_due_date_2.incomplete
+  #   task_list.store(task_due_date_2)
+  #   #need to use tasks array and sort through array by incomplete tasks with due dates and then proceeded by incomplete tasks without dates
+  #   expect(tasks.incomplete_tasks_ordered_by_day).to include(task_due_date, task_due_date_2, task_0)
+  # end
+
 end
-
-
-
-
-
-
-
-# Story: As a developer with a TaskList, I can list all the not completed items in order of due date.
-
-
-# Story: As a developer with a TaskList with and without due dates, I can list all the not completed items in order of due date, and then the items without due dates.
